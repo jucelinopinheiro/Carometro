@@ -38,3 +38,7 @@ Para esse comando e necessário executar o powershell em modo admin.
     <code>New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -DnsName "local.nomesite.com.br" -FriendlyName "Nomesite" -NotAfter (Get-Date).AddYears(10) 
     </code>
 </pre>
+
+## Fluxo de cadastros
+
+<img src="Fluxo_para_cadastros.png">
