@@ -1,0 +1,72 @@
+﻿@using CarometroV6.ViewModel.CursoViewModel;
+@model EditarCursoViewModel
+@{
+    ViewData["Title"] = "Editar Curso";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Editar Curso</h1>
+        <hr>
+
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <form asp-controller="Curso" asp-action="EditarCurso" method="post">
+        <div hidden>
+            @Html.HiddenFor(x => x.Id)
+            @Html.ValidationMessageFor(x => x.Id)
+        </div>
+
+        <div class="form-group mt-2">
+            @Html.LabelFor(x => x.Ativo)
+            @Html.CheckBoxFor(x => x.Ativo, new {htmlAttributes = new {@class="form-control", @required="required"}})
+            @Html.ValidationMessageFor(x => x.Ativo)
+        </div>
+
+        <div class="form-group mt-2">
+            @Html.LabelFor(x => x.Descricao)
+            @Html.EditorFor(x => x.Descricao, new {htmlAttributes = new {@class="form-control", @required="required"}})
+            @Html.ValidationMessageFor(x => x.Descricao)
+        </div>
+
+        <div class="row mt-2">
+            <div class="col form-group">
+                @Html.LabelFor(x => x.TipoCurso)
+                <select class="form-control" required asp-for="TipoCurso" asp-items="Model.ListTipoCurso">
+                    <option selected="selected" value="">-- Tipo --</option>
+                </select>
+                @Html.ValidationMessageFor(x => x.TipoCurso)
+            </div>
+            <div class="col form-group">
+                @Html.LabelFor(x => x.Cor)
+                <input class="form-control form-control-color" type="color" asp-for="Cor" id="cor" name="cor" title="Selecione a cor">
+                <div id="corHelp" class="form-text">Escolha uma cor escura devido aos textos</div>
+                @Html.ValidationMessageFor(x => x.Cor)
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <a class="btn btn-secondary" asp-area="" asp-controller="Curso" asp-action="Index"><i class="fas fa-undo-alt"></i> Voltar</a>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar</button>
+            </div>
+        </div>
+
+    </form>
+</div>

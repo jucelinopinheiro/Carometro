@@ -1,0 +1,71 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background-color : #fcfcfc;
+}
+
+/*
+    Personalizações
+*/
+:root {
+    --azul-fundo: #031b4e;
+    --vermelho-fundo: #cf0f40;
+    --roxo-fundo: #32087a;
+    --cinza-texto: #696969;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Inverte a imagem tirando efeito espelho*/
+video {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    margin-top: 5px;
+    border: #696969 1px solid;
+}
+
+/* Inverte a imagem tirando efeito espelho */
+canvas {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+    border: #696969 1px solid;
+}
+
+#mensagem {
+    display: hide;
+}
+
+.bg-azul-fundo {
+    background-color: var(--azul-fundo);
+}
+
+/*Validação de erros forms*/
+.field-validation-error{
+    color:#ff0000;
+}

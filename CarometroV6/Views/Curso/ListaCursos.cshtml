@@ -1,0 +1,57 @@
+﻿
+@model List<Curso>
+@{
+    ViewData["Title"] = "Alunos";
+}
+<div>
+    <h1 class="display-4">Lista de Cursos e turmas</h1>
+    <hr>
+    
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <div>
+        @if (Model != null && Model.Any())
+        {
+            foreach (Curso curso in Model)
+            {
+                <div class="row">
+                    <div class="col">
+
+                        <h3 style="color:@curso.Cor;"> @curso.Descricao</h3>
+                        @if(curso.Turmas != null && curso.Turmas.Any())
+                        {
+                            <div class="row">
+                                <div class="col">
+                                    <ul>
+                                        @foreach(Turma turma in curso.Turmas)
+                                        {
+                                            <li><a href="~/Turma/Consulta/@turma.Id">@turma.Descricao</a></li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                        
+                    </div>
+                </div>
+            }
+        }
+        
+    </div>
+
+
+</div>

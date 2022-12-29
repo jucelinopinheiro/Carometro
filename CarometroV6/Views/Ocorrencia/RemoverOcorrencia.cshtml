@@ -1,0 +1,27 @@
+﻿@model Ocorrencia
+@{
+    ViewData["Title"] = "Remover Ocorrência";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Excluir ocorrência</h1>
+        <hr>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">Atenção!</h4>
+                Todos anexos da ocorrência serão exlcuidos de forma permanente
+            </div>
+            <p class="h4 bg-light"><strong>Ocorrido: </strong>@Model.Nome</p>
+            <p class="h4 bg-light"><strong>Ocorrência: </strong>@Model.Descricao</p>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <a role="button" class="btn btn-danger" asp-route-alunoId="@Model.AlunoId" asp-route-turmaId="@Model.TurmaId" asp-route-ocorrenciaId="@Model.Id" asp-controller="Ocorrencia" asp-action="ExcluirOcorrencia"><i class="far fa-thumbs-up"></i> Confirma</a>
+            <a role="button" class="btn btn-primary" asp-route-alunoId="@Model.AlunoId" asp-route-turmaId="@Model.TurmaId" asp-controller="Aluno" asp-action="Detalhe"><i class="fas fa-times"></i> Cancela</a>
+        </div>
+    </div>
+</div>

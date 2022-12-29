@@ -1,0 +1,45 @@
+﻿@model FileUploadModel
+@{
+    ViewData["Title"] = "Importe Aluno";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Importar alunos via .csv</h1>
+        <hr>
+
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <form asp-controller="Aluno" asp-action="ImportAlunosCsv" enctype="multipart/form-data" method="post">
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <label class="input-group-text" for="Arquivo">Upload</label>
+                    <input type="file" asp-for="Arquivo" accept=".csv" class="form-control">
+                </div>
+                <small class="form-text text-muted">Somente arquivo ".csv"</small>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success"><i class="fa-solid fa-upload"></i> Upload do Arquivo</button>
+            </div>
+        </div>
+    </form>
+</div>

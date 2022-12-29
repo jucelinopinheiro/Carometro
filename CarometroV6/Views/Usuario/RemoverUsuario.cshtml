@@ -1,0 +1,24 @@
+﻿@using CarometroV6.ViewModel.UsuarioViewModel
+@model Usuario
+@{
+    ViewData["Title"] = "Remover Usuário";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Excluir usuário</h1>
+        <hr>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <p class="h4 bg-light"><strong> NIF: </strong>@Model.Id</p>
+            <p class="h4 bg-light"><strong>Nome: </strong>@Model.Nome</p>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <a role="button" class="btn btn-danger" asp-route-id="@Model.Id" asp-controller="Usuario" asp-action="ExcluirUsuario"><i class="far fa-thumbs-up"></i> Confirma</a>
+            <a role="button" class="btn btn-primary" asp-controller="Usuario" asp-action="Index"><i class="fas fa-times"></i> Cancela</a>
+        </div>
+    </div>
+</div>

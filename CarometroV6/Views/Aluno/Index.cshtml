@@ -1,0 +1,61 @@
+﻿@using CarometroV6.Enum;
+@model List<Aluno>
+@{
+    ViewData["Title"] = "Alunos";
+}
+<div>
+    <h1 class="display-4">Lista de Alunos</h1>
+    <hr>
+    <div class="mb-3">
+        <a class="btn btn-primary" asp-area="" asp-controller="Aluno" asp-action="CriarAluno"><i class="fas fa-plus"></i> Novo Aluno</a>
+    </div>
+</div>
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["MensagemErro"]
+    </div>
+}
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Celular</th>
+                <th scope="col">Email</th>
+                <th scope="col">CPF</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (Aluno aluno in Model)
+                {
+                    <tr>
+                        <td>@aluno.Nome</td>
+                        <td>@aluno.CelAluno</td>
+                        <td>@aluno.EmailAluno</td>
+                        <td>@aluno.Cpf</td>
+                        <td>
+                            <a class="btn btn-success" title="Editar aluno" asp-route-id="@aluno.Id" asp-controller="Aluno" asp-action="EditarAluno"><i class="fa-solid fa-user-pen"></i></a>
+                            <a class="btn btn-danger" title="Excluir aluno" asp-route-id="@aluno.Id" asp-controller="Aluno" asp-action="RemoverAluno"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>

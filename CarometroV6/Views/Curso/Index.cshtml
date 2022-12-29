@@ -1,0 +1,61 @@
+﻿@using CarometroV6.Enum;
+@model List<Curso>
+@{
+    ViewData["Title"] = "Cursos";
+}
+<div>
+    <h1 class="display-4">Lista de Cursos</h1>
+    <hr>
+    <div class="mb-3">
+        <a class="btn btn-primary" asp-area="" asp-controller="Curso" asp-action="CriarCurso"><i class="fas fa-plus"></i> Novo Curso</a>
+    </div>
+</div>
+
+@if (TempData["MensagemSucesso"] != null)
+{
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["MensagemSucesso"]
+        </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["MensagemErro"]
+        </div>
+}
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Descrição</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Cor</th>
+                <th scope="col">Ativo</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (Curso curso in Model)
+                {
+                    <tr>
+                        <td>@curso.Descricao</td>
+                        <td>@((ETipoCurso)curso.Tipo)</td>
+                        <td><button class="btn" title="Editar curso" style="background-color:@curso.Cor"><i class="fa-solid fa-spray-can text-light"></i></button></td>
+                        <td>@(curso.Ativo == true?"Sim":"Não")</td>
+                        <td>
+                            <a class="btn btn-success" title="Editar curso" asp-route-id="@curso.Id" asp-controller="Curso" asp-action="EditarCurso"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a class="btn btn-danger" title="Excluir curso" asp-route-id="@curso.Id" asp-controller="Curso" asp-action="RemoverCurso"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>

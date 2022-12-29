@@ -1,0 +1,49 @@
+﻿@using CarometroV6.ViewModel.LoginViewModel
+@model LoginViewModel
+@{
+    Layout = "_LayoutDeslogado";
+    ViewData["Title"] = "Login";
+}
+<div>
+    <div>
+        <h1 class="display-4">Login</h1>
+        <hr>
+    </div>
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+    
+    <form asp-controller="Login" asp-action="Entrar" method="post">
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Login)
+                    @Html.EditorFor(x => x.Login, new {htmlAttributes = new {@class="form-control", @required="required", @placeholder="Digite seu Nif"}})
+                    @Html.ValidationMessageFor(x => x.Login)
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Senha)
+                    @Html.PasswordFor(x => x.Senha, new {@class="form-control", @required="required"})
+                    @Html.ValidationMessageFor(x => x.Senha)
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+            </div>
+        </div>
+        
+    </form>
+
+</div>

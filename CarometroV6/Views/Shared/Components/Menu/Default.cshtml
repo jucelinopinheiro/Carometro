@@ -1,0 +1,11 @@
+﻿@model Usuario
+@{
+    string apelido = Model.Nome.Split(" ")[0];
+}
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fas fa-user"></i> @apelido
+</a>
+<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <li><a class="dropdown-item" asp-area="" asp-controller="Login" asp-action="Sair"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    <li></li>
+</ul>

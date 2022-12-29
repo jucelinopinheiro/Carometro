@@ -1,0 +1,61 @@
+﻿@using CarometroV6.Enum;
+@model List<Turma>
+@{
+    ViewData["Title"] = "Turmas";
+}
+<div>
+    <h1 class="display-4">Lista de Turmas</h1>
+    <hr>
+    <div class="mb-3">
+        <a class="btn btn-primary" asp-area="" asp-controller="Turma" asp-action="CriarTurma"><i class="fas fa-plus"></i> Nova Turma</a>
+    </div>
+</div>
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["MensagemErro"]
+    </div>
+}
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Descrição</th>
+                <th scope="col">Sigla</th>
+                <th scope="col">Turma SGset</th>
+                <th scope="col">Ativa</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (Turma turma in Model)
+                {
+                    <tr>
+                        <td>@turma.Descricao</td>
+                        <td>@turma.Sigla</td>
+                        <td>@turma.TurmaSgset</td>
+                        <td>@(turma.Ativo == true ? "Sim" : "Não")</td>
+                        <td>
+                            <a class="btn btn-success" title="Editar turma" asp-route-id="@turma.Id" asp-controller="Turma" asp-action="EditarTurma"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a class="btn btn-danger" title="Excluir turma" asp-route-id="@turma.Id" asp-controller="Turma" asp-action="RemoverTurma"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>

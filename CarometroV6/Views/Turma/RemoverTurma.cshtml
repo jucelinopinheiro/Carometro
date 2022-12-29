@@ -1,0 +1,23 @@
+﻿@model Turma
+@{
+    ViewData["Title"] = "Remover Turma";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Excluir Turma</h1>
+        <hr>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <p class="h4 bg-light"><strong>       ID: </strong>@Model.Id</p>
+            <p class="h4 bg-light"><strong>Descrição: </strong>@Model.Descricao</p>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col">
+            <a role="button" class="btn btn-danger" asp-route-id="@Model.Id" asp-controller="Turma" asp-action="ExcluirTurma"><i class="far fa-thumbs-up"></i> Confirma</a>
+            <a role="button" class="btn btn-primary" asp-controller="Turma" asp-action="Index"><i class="fas fa-times"></i> Cancela</a>
+        </div>
+    </div>
+</div>
