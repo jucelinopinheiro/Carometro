@@ -20,6 +20,18 @@ Muitas outras funcionalidades estão sendo pensadas e desenvolvidas, afim de con
 
 <br>
 
+## Tela Turma Alunos
+<img src="img/carometro.png">
+
+## Tela Detalhe Aluno
+<img src="img/carometro_a.png">
+
+## Tela Turmas
+<img src="img/carometro_b.png">
+
+## Fluxo de cadastros
+<img src="img/Fluxo_para_cadastros.png">
+
 ## Atenção aos itens para o deploy:
 
 1.  Dar acesso de gravação para o usuário padrão do IIS na pasta “wwwroot\Files”
@@ -39,6 +51,3 @@ Para esse comando e necessário executar o powershell em modo admin.
     </code>
 </pre>
 
-## Fluxo de cadastros
-
-<img src="Fluxo_para_cadastros.png">
