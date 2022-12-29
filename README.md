@@ -21,16 +21,16 @@ Muitas outras funcionalidades estão sendo pensadas e desenvolvidas, afim de con
 <br>
 
 ## Tela Turma Alunos
-<img src="img/carometro.png">
+<img src="carometro.png">
 
 ## Tela Detalhe Aluno
-<img src="img/carometro_a.png">
+<img src="carometro_a.png">
 
 ## Tela Turmas
-<img src="img/carometro_b.png">
+<img src="carometro_b.png">
 
 ## Fluxo de cadastros
-<img src="img/Fluxo_para_cadastros.png">
+<img src="Fluxo_para_cadastros.png">
 
 ## Atenção aos itens para o deploy:
 
