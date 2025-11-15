@@ -1,0 +1,7 @@
+﻿<div>
+    <p><strong>ID: </strong>@Model?.Id <strong>Descrição: </strong>@Model.Descricao</p>
+    <p><strong>Tipo: </strong>@Model.NomeTipo</p>
+    <p><strong>Cor: </strong><button class="btn" title="@Model.Cor" style="background-color:@Model.Cor;width:16px;height:16px;"></button> @Model.Cor</p>
+    <p><strong>Ativo: </strong>@(Model.Ativo ? "Sim" : "Não")</p>
+    <p><strong>Criado: </strong> @Model.CreateAt <strong>Atualizado: </strong>@Model.UpdateAt</p>
+</div>

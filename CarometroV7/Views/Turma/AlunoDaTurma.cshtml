@@ -1,0 +1,121 @@
+﻿@model Matricula
+@{
+    ViewData["Title"] = "Editar Aluno";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Aluno</h1>
+        <hr>
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <div class="row">
+        <div class="col">
+            <div class="card p-2">
+                <div class="p-2 text-light" style="background-color:@Model?.Turma.Curso.Cor">
+                    @Model?.Turma.Descricao
+                </div>
+
+                
+                @if (Model != null)
+                {
+                    <div class="row g-0 mt-2">
+                        <div class=" col-md-3">
+                            <img src="~/files/Fotos/@Model.Aluno.Foto" class="card-img-top" style="max-width:300px; max-height:300px;" alt="foto do aluno">
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="">@Model.Aluno.Nome</h5>
+                                <div><strong>Cel:</strong> @Model.Aluno.CelAluno</div>
+                                <div><strong>Email:</strong> @Model.Aluno.EmailAluno</div>
+                                <div><strong>Nascimento:</strong> @String.Format("{0:dd/MM/yyyy}", Model.Aluno.Nascimento) - <strong>Idade Atual: </strong> @((int)((DateTime.Now.Date - Model.Aluno.Nascimento).TotalDays) / 365)</div>
+                                <div><strong>CPF: </strong> @Model.Aluno.Cpf - <strong>RG: </strong> @Model.Aluno.Rg</div>
+                                <hr />
+                                <div><strong>Mãe: </strong> @Model.Aluno.Mae</div>
+                                <div><strong>Cel:</strong> @Model.Aluno.CelMae</div>
+                                <div><strong>Pai: </strong> @Model.Aluno.Pai</div>
+                                <div><strong>Cel:</strong> @Model.Aluno.CelPai</div>
+                                <hr />
+                                <div><strong>Pne: @(Model.Aluno.Pne ? "SIM" : "NÃO")  - </strong>OBS: @Model.Aluno.ObsAluno</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <a class="btn ca-btn-secondary" asp-route-id="@Model.TurmaId" asp-controller="Turma" asp-action="AlunosDaTurma"><i class="fas fa-undo-alt"></i> Voltar</a>
+                        <a class="btn btn-warning" asp-route-id="@Model.Aluno.Id" asp-controller="Matricula" asp-action="Edit"><i class="fa-solid fa-users-rays"></i> Editar Matrícula</a>
+                        <a class="btn ca-btn-primary" asp-route-cpf="@Model.Aluno.Cpf" asp-controller="Foto" asp-action="Index"><i class="fa-solid fa-camera"></i> Tirar Foto</a>
+                        <a class="btn ca-btn-primary" asp-route-id="@Model.Aluno.Id" asp-controller="Aluno" asp-action="Edit"><i class="fa-solid fa-user-pen"></i> Editar</a>
+                        <a class="btn ca-btn-dark" asp-route-matriculaId="@Model.Id" asp-route-alunoId="@Model.Aluno.Id" asp-route-turmaId="@Model.Turma.Id" asp-controller="Ocorrencia" asp-action="CriarOcorrencia"><i class="fas fa-plus"></i> Criar Ocorrência</a>
+                    </div>
+                }      
+            </div>
+        </div>
+    </div>
+
+    @if (Model?.Aluno.Ocorrencias != null && Model.Aluno.Ocorrencias.Any())
+    {
+        foreach (Ocorrencia ocorrencia in Model.Aluno.Ocorrencias)
+        {
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card p-2">
+                        <div class="p-2 ca-bg-secondary text-light">
+                            Ocorrência: @ocorrencia.CreateAt - @ocorrencia.Nome
+                        </div>
+
+                        <div class="card-body">
+                            <p class="card-text">
+                                <strong>Turma : @ocorrencia.Turma.Sigla</strong> -
+                                @ocorrencia.Descricao
+                            </p>
+                            <p>
+                                <strong>Criado por: </strong>@ocorrencia.Usuario.Nome - <strong>Criado em: </strong>@String.Format("{0:dd/MM/yyyy}", ocorrencia.CreateAt) -
+                                <strong>Atualizado: </strong> @String.Format("{0:dd/MM/yyyy}", ocorrencia.UpdateAt)
+                            </p>
+                            <div>
+                                @if (ocorrencia.Anexos != null && ocorrencia.Anexos.Any())
+                                    foreach (AnexoOcorrencia anexo in ocorrencia.Anexos)
+                                    {
+                                        <span>Anexos: <a href="~/@anexo.UrlAnexo" target="_blank" class="link"><i class="fa-regular fa-note-sticky"></i> @anexo.Descricao</a> - </span>
+                                    }
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <hr>
+                            <div class="d-flex bd-highlight">
+                                <div class="me-auto p-2 bd-highlight">
+                                    <a class="btn btn-danger" asp-route-alunoId="@Model.Aluno.Id" asp-route-turmaId="@Model.Turma.Id" asp-route-ocorrenciaId="@ocorrencia.Id" asp-controller="Ocorrencia" asp-action="RemoverOcorrencia"><i class="fas fa-trash-alt"></i> Excluir</a>
+                                </div>
+                                <div class="p-2 bd-highlight"><a class="btn ca-btn-secondary" asp-route-alunoId="@Model.Aluno.Id" asp-route-turmaId="@Model.Turma.Id" asp-route-ocorrenciaId="@ocorrencia.Id" asp-controller="Ocorrencia" asp-action="CriarAnexos"><i class="fas fa-paperclip"></i> Anexar</a></div>
+                                <div class="p-2 bd-highlight"><a class="btn ca-btn-primary" asp-route-matriculaId="@Model.Id" asp-route-alunoId="@Model.Aluno.Id" asp-route-turmaId="@Model.Turma.Id" asp-route-ocorrenciaId="@ocorrencia.Id" asp-controller="Ocorrencia" asp-action="EditarOcorrencia"><i class="fa-solid fa-pen-to-square"></i> Editar</a></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        }
+
+    }
+    
+</div>

@@ -1,0 +1,185 @@
+﻿@model UploadFotoViewModel
+@{
+    ViewData["Title"] = "Tirar Foto";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Tirar Foto</h1>
+        <hr>
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <div id="mensagem"></div>
+
+    <form asp-controller="Foto" asp-action="UploadFoto" method="post">
+        <div class="row">
+            <div class="col-md-3 form-group mt-2">
+                @Html.LabelFor(x => x.Cpf)
+                @Html.EditorFor(x => x.Cpf, new { htmlAttributes = new { @class = "form-control", @oninput = "mascaraCpf(this)", @required = "required" } })
+                @Html.ValidationMessageFor(x => x.Cpf)
+            </div>
+        </div>
+        <div hidden>
+            @Html.HiddenFor(x => x.Base64Image)
+            @Html.ValidationMessageFor(x => x.Base64Image)
+        </div>
+        <div class="row p-2">
+            <div class="col">
+                <h4>Câmera</h4>
+                <video class="video-foto" id="webcam" width="300" height="300" playsinline autoplay></video>
+            </div>
+        </div>
+        <div class="d-flex justify-content-md-start justify-content-between">
+            <div class="p-2">
+                <a class="btn ca-btn-secondary" onclick="history.back()"><i class="fas fa-undo-alt"></i> Voltar</a>
+            </div>
+            <div class="p-2">
+                <button type="button" id="btncamera" class="btn btn-warning">
+                    <i class="fa-solid fa-camera-rotate"></i>
+                    Câmera
+                </button>
+            </div>
+            <div class="p-2">
+                <button type="button" id="btnfoto" class="btn ca-btn-primary">
+                    <i class="fa-solid fa-camera"></i>
+                    Foto
+                </button>
+            </div>
+        </div>
+        <hr>
+        <div class="row p-2">
+            <div class="col">
+                <h4>Foto</h4>
+                <canvas class="canvas-foto" id="foto" width="300" height="300"></canvas>
+            </div>
+        </div>
+        <div class="d-flex justify-content-md-start justify-content-between">
+            <div class="p-2">
+                <button type="button" id="btnvoltar" class="btn btn-warning">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Alterar Foto
+                </button>
+            </div>
+            <div class="p-2">
+                <button type="submit" id="btnsalvar" class="btn btn-success">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Salvar Foto
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section scripts {
+    <script>
+        //setup inícial da câmera
+        const constraints = {
+            audio: false,
+            video: {
+                width: 300, height: 300,
+                facingMode: 'environment'
+            }
+        };
+
+        var video = document.querySelector("#webcam");
+        var mensagem = document.querySelector("#mensagem");
+
+        $(function () {
+            inciarCamera(constraints);
+        });
+
+        $("#btnvoltar").prop("disabled", true);
+        $("#btnsalvar").prop("disabled", true);
+
+        $("#btncamera").click(function () {
+            if (constraints.video.facingMode == 'user') {
+                constraints.video.facingMode = 'environment';
+            } else {
+                constraints.video.facingMode = 'user';
+            }
+            video.setAttribute('stop', '');
+            inciarCamera(constraints);
+        });
+
+        $("#btnvoltar").click(function () {
+            $("#btnfoto").prop("disabled", false);
+            $("#btnvoltar").prop("disabled", true);
+            $("#btnsalvar").prop("disabled", true);
+        });
+
+        // Capturando imagem para o canvas e salva no campo hidem basa64image
+        $("#btnfoto").click(function () {
+            var canvas = document.getElementById('foto');
+            var context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0);
+            $(this).prop("disabled", true);
+            $("#btnvoltar").prop("disabled", false);
+            $("#btnsalvar").prop("disabled", false);
+
+            // Below new canvas to generate flip/mirron image from existing canvas
+            var destinationCanvas = document.createElement("canvas");
+            var destCtx = destinationCanvas.getContext('2d');
+
+
+            destinationCanvas.height = 300;
+            destinationCanvas.width = 300;
+
+            destCtx.translate(video.videoWidth, 0);
+            destCtx.scale(-1, 1);
+            destCtx.drawImage(document.getElementById("foto"), 0, 0);
+
+            // Get base64 data to send to server for upload
+            var imagebase64data = destinationCanvas.toDataURL("image/png");
+            imagebase64data = imagebase64data.replace('data:image/png;base64,', '');
+
+            $("#Base64Image").val(imagebase64data);
+
+        });
+
+        function alerta(message, type) {
+            var wrapper = document.createElement('div')
+            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            $("#mensagem").append(wrapper);
+            $("#mensagem").show();
+        }
+
+
+
+        function inciarCamera(constraints) {
+
+            video.setAttribute('autoplay', '');
+            video.setAttribute('muted', '');
+            video.setAttribute('playsinline', '');
+
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia(constraints)
+                    .then(function (stream) {
+                        video.srcObject = stream;
+                    })
+                    .catch(function (error) {
+                        alerta('Ops! Seu navegador não tem suporte ou câmera não ativada', 'danger');
+                    });
+            }
+        }
+
+
+
+    </script>
+}

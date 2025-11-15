@@ -1,0 +1,94 @@
+﻿@model FileUploadModel
+@{
+    ViewData["Title"] = "Importe Aluno";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Importar alunos via .csv</h1>
+        <hr>
+
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <p>Para importar o arquivo, verifique se a planilha possui os campos e configurações e formatação iguais. O arquivo ".csv" deve ter os campos separados por <strong>";"</strong></p>
+            <a href="~/files/Modelos/ModeloUpLoadAlunos.csv" target="_blank" class="btn btn-primary" data-toggle="tooltip" title="Modelo Csv"><i class="fa-solid fa-download"></i> Download modelo .CSV</a>
+        </div>
+    </div>
+    
+    <div class="row mb-2">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nº de Matrícula</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">RG</th>
+                            <th scope="col">Data de Nascimento</th>
+                            <th scope="col">Nome do Pai</th>
+                            <th scope="col">Nome da Mãe</th>
+                            <th scope="col">Data de Matrícula</th>
+                            <th scope="col">Celular</th>
+                            <th scope="col">e-mail</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">Portador de Necessidades Especiais</th>
+                            <th scope="col">Turma</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Texto</td>
+                            <td>Texto</td>
+                            <td>Texto</td>
+                            <td>Data</td>
+                            <td>Texto</td>
+                            <td>Texto</td>
+                            <td>Data</td>
+                            <td>Texto</td>
+                            <td>Texto</td>
+                            <td>Texto</td>
+                            <td>Número [0 | 1]</td>
+                            <td>Texto</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+           
+    <form asp-controller="Aluno" asp-action="ImportAlunosCsv" enctype="multipart/form-data" method="post">
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <label class="input-group-text" for="Arquivo">Upload</label>
+                    <input type="file" asp-for="Arquivo" accept=".csv" class="form-control">
+                </div>
+                <small class="form-text text-muted">Somente arquivo ".csv"</small>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-12">
+                <button type="submit" class="btn btn-success"><i class="fa-solid fa-upload"></i> Upload do Arquivo</button>
+            </div>
+        </div>
+    </form>
+</div>

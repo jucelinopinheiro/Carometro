@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Matricula>
+@{
+    ViewData["Title"] = "Matrículas";
+}
+<div class="row">
+    <div class="col">
+        <h1 class="display-4">Lista de Matrículas - Concluídas</h1>
+        <hr />
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        <a type="button" class="btn ca-btn-primary" asp-controller="Matricula" asp-action="Create">
+            <i class="fas fa-plus"></i> Nova Matrícula
+        </a>
+    </div>
+
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["MensagemSucesso"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["MensagemErro"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Matrícula SGSet
+                </th>
+                <th>
+                    Aluno
+                </th>
+                <th>
+                    Turma SGSet
+                </th>
+                <th>
+                    Status da Matrícula
+                </th>
+                <th>
+                    Ações
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MatriculaSgset)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Aluno.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Turma.TurmaSgset)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NomeStatus)
+                    </td>
+                    <td>
+                        <a class="btn ca-btn-primary" title="Editar matrícula" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="btn ca-btn-secondary" title="Detalhes da matrícula" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i></a>
+                        <a class="btn btn-danger" title="Excluir matrícula" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

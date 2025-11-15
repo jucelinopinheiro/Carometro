@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Curso>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h1 class="display-6">Busca de Aluno</h1>
+        <form asp-controller="Aluno" asp-action="BuscaAluno" method="post">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Nome do aluno" id="nome" name="nome" required />
+                <button class="btn btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Busca</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        
+        <h1 class="display-6">Lista de Cursos e turmas</h1>
+        <hr />
+        <div>
+            @if (Model != null && Model.Any())
+            {
+                foreach (Curso curso in Model)
+                {
+                    <div class="row">
+                        <div class="col">
+
+                            <h3 style="color:@curso.Cor;"> @curso.Descricao</h3>
+                            @if (curso.Turmas != null && curso.Turmas.Any())
+                            {
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="menu-cursos">
+                                            <ul>
+                                                @foreach (Turma turma in curso.Turmas)
+                                                {
+                                                    <li>
+                                                        <img src="~/img/bags/@(string.IsNullOrEmpty(turma?.Bag)?"../Bag.png":turma.Bag)" /><a href="~/Turma/AlunosDaTurma/@turma.Id">@turma.Descricao</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+    <div class="col">
+
+    </div>
+</div>

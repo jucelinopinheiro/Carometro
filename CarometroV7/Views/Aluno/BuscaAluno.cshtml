@@ -1,0 +1,55 @@
+﻿@model List<Aluno>
+@{
+    ViewData["Title"] = "Busca por aluno";
+}
+<div class="row">
+    <div class="col-md-4">
+        <h1 class="display-6">Busca de Aluno</h1>
+        <form asp-controller="Aluno" asp-action="BuscaAluno" method="post">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Nome do aluno" id="nome" name="nome" required />
+                <button class="btn btn-success" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Busca</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @TempData["MensagemErro"]
+    </div>
+}
+
+<div>
+    @if (Model != null && Model.Any())
+    {
+        foreach (Aluno aluno in Model)
+        {
+
+            <div class="d-flex flex-row mb-3">
+                <div class="p-2 lista-aluno"><img src="~/Files/Fotos/@aluno.Foto"></div>
+                <div class="p-2">
+                    <div><strong>@aluno.Nome</strong></div>
+                    <div>
+                        <strong>Matriculas: </strong>
+                        @foreach (Matricula matricula in aluno.Matriculas)
+                        {
+                            <a asp-route-id="@matricula.Id" asp-controller="Turma" asp-action="AlunoDaTurma">@matricula.Turma.TurmaSgset</a>
+                            <span> | </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,10 @@
+﻿<div class="row">
+    <div class="col">
+        <p><strong>ID: </strong>@Model?.Id <strong>Matrícula SGSET: </strong>@Model.MatriculaSgset</p>
+        <p><strong>Aluno: </strong> @Model.AlunoId - @Model.Aluno.Nome</p>
+        <p><strong>Turma SGSET: </strong>@Model.Turma.TurmaSgset <strong>Data da Matrícula: </strong>@String.Format("{0:dd/MM/yyyy}", Model.DataMatricula)</p>
+        <p><strong>Turma: </strong> @Model.TurmaId - @Model.Turma.Descricao</p>
+        <p><strong>Status: </strong> @Model.NomeStatus</p>
+        <p><strong>Criado: </strong> @Model.CreateAt <strong>Atualizado: </strong>@Model.UpdateAt</p>
+    </div>
+</div>

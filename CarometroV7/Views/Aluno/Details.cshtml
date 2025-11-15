@@ -1,0 +1,67 @@
+﻿@model Aluno
+@{
+    ViewData["Title"] = "Ficha Aluno";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Ficha do Aluno</h1>
+        <hr>
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <div class="row">
+        <div class="col">
+            <div class="card p-2">
+                <div class="p-2 ca-bg-dark text-light">
+                   Ficha do Aluno
+                </div>
+
+                <div class="row g-0 mt-2">
+                    <div class=" col-md-3">
+                        <img src="~/files/Fotos/@Model.Foto" class="card-img-top" style="max-width:300px; max-height:300px;"
+                             alt="foto do aluno">
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="">@Model.Nome</h5>
+
+                            <div><strong>Cel:</strong> @Model.CelAluno</div>
+                            <div><strong>Email:</strong> @Model.EmailAluno</div>
+                            <div><strong>Nascimento:</strong> @String.Format("{0:dd/MM/yyyy}", Model.Nascimento) - <strong>Idade Atual: </strong> @((int)((DateTime.Now.Date - Model.Nascimento).TotalDays) / 365)</div>
+                            <div><strong>CPF: </strong> @Model.Cpf - <strong>RG: </strong> @Model.Rg</div>
+                            <hr />
+                            <div><strong>Mãe: </strong> @Model.Mae</div>
+                            <div><strong>Cel:</strong> @Model.CelMae</div>
+                            <div><strong>Pai: </strong> @Model.Pai</div>
+                            <div><strong>Cel:</strong> @Model.CelPai</div>
+                            <hr />
+                            <div><strong>Matrícula Ativa: @(Model.Ativo ? "SIM" : "NÃO")  - </strong><strong>Pne: @(Model.Pne ? "SIM" : "NÃO")  - </strong>OBS: @Model.ObsAluno</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <a class="btn ca-btn-secondary" onclick="history.back()"><i class="fas fa-undo-alt"></i> Voltar</a>
+                    <a class="btn ca-btn-primary" asp-route-id="@Model.Id" asp-controller="Aluno" asp-action="Edit"><i class="fa-solid fa-user-pen"></i> Editar</a>
+                    <a class="btn ca-btn-primary" asp-route-cpf="@Model.Cpf" asp-controller="Foto" asp-action="Index"><i class="fa-solid fa-camera"></i> Tirar Foto</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,40 @@
+﻿@model LoginViewModel
+@{
+    Layout = "_LoginLayout";
+}
+<form asp-controller="Access" asp-action="Login" method="post">
+    <img class="mb-4" src="~/img/carometro_logo.png" alt="" width="64" height="64">
+    <h1 class="h3 mb-3 fw-normal">Carômetro</h1>
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["MensagemErro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="form-floating mb-3">
+        <input type="number" class="form-control" asp-for="Login" id="floatingInput" placeholder="">
+        <label for="floatingInput">NIF</label>
+        <span asp-validation-for="Login" class="text-danger"></span>
+    </div>
+
+    <div class="form-floating mb-4">
+        <input type="password" class="form-control" asp-for="Password" id="floatingPassword" placeholder="">
+        <label for="floatingPassword">Senha</label>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="checkbox mb-4">
+        <label>
+            <input type="checkbox" value="remember-me"> Lembrar
+        </label>
+    </div>
+    <div class="mb-4">
+        <button class="w-100 btn btn-lg ca-btn-dark" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Entrar</button>
+    </div>
+</form>
+<p class="text-muted">
+    &copy; 2024 - Carômetro ver 7.0
+</p>

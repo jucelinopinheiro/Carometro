@@ -1,0 +1,22 @@
+﻿@model Matricula
+@{
+    ViewData["Title"] = "Detalhes";
+}
+<div class="row">
+    <div class="col">
+        <h1 class="display-4">Detalhes da matrícula</h1>
+        <hr />
+    </div>
+</div>
+
+<partial name="_MatriculaResumo" />
+
+<div class="row mt-3">
+    <div class="col">
+        <a type="button" class="btn ca-btn-primary" asp-controller="Matricula" asp-action="Edit" asp-route-id="@Model?.Id">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Editar
+        </a>
+        <a class="btn ca-btn-secondary" onclick="history.back()"><i class="fas fa-undo-alt"></i> Voltar</a>
+    </div>
+</div>

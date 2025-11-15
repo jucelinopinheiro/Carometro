@@ -1,0 +1,93 @@
+﻿@model Turma
+@{
+    ViewData["Title"] = "Turma";
+}
+<div class="row">
+    <div class="col">
+        <h1 class="display-4">@Model?.Descricao</h1>
+        <hr />
+
+        <div class="row mb-4">
+            <div class="col-md-2">
+                <img src="~/img/bags/@(string.IsNullOrEmpty(Model?.Bag)?"../Bag.png":Model.Bag)" alt="logo da turma" width="200" height="200" />
+            </div>
+            <div class="col-md-10">
+                <p class="h4">Sigla: @Model?.Sigla</p>
+                <p class="h5"><strong>Turma no SGSET: </strong>@Model?.TurmaSgset - <strong>Inicio:</strong>@String.Format("{0:dd/MM/yyyy}", @Model?.DataInicio)  - <strong>Fechamento :</strong> @String.Format("{0:dd/MM/yyyy}", @Model?.DataFim)</p>
+                <a href="@Model?.Classroom" target="_blank" class="btn btn-success"><i class="fa-solid fa-chalkboard-user"></i>  Classroon</a>
+                <a class="btn ca-btn-secondary" title="Detalhes da turma" asp-controller="Turma" asp-action="Details" asp-route-id="@Model?.Id"><i class="fa-solid fa-circle-info"></i> Detalhes da Turma</a>
+                <a class="btn ca-btn-primary" asp-route-id="@Model?.Id" asp-controller="Turma" asp-action="CreateAta"><i class="fas fa-paperclip"></i> Anexar ATA</a>
+
+                <div class="mt-2">
+                    <p>
+                        <strong class="h5">Atas da turma:</strong>
+                            @if (Model?.TurmaAtas != null && Model.TurmaAtas.Any())
+                            {
+                                foreach (TurmaAta turmaAta in Model.TurmaAtas.OrderBy(x => x.Id))
+                                {
+                                    <span> <a href="~/@turmaAta.UrlAnexo" target="_blank" class="link"><i class="fa-regular fa-note-sticky"></i> @turmaAta.CreateAt.ToString("dd/MM/yyyy") - @turmaAta.Descricao</a> - </span>
+                                }
+                            }
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                @TempData["MensagemSucesso"]
+            </div>
+        }
+
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                @TempData["MensagemErro"]
+            </div>
+        }
+
+        <div class="mb-2">
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                @if (Model?.Matriculas != null && Model.Matriculas.Any())
+                {
+                    foreach (Matricula matricula in Model.Matriculas.OrderBy(x => x.Aluno?.Nome))
+                    {
+                        <div class="col">
+                            <div class="card p-2" style="max-width: 550px;">
+                                <div class="d-grid gap-2" style="background-color:@Model.Curso?.Cor;">
+                                    <a class="btn text-light" type="button" asp-route-id="@matricula.Id" asp-controller="Turma" asp-action="AlunoDaTurma">@Model.Sigla</a>
+                                </div>
+
+                                <div class="row g-0 mt-2">
+                                    <div class="col-sm-5">
+                                        <img src="~/Files/Fotos/@matricula.Aluno?.Foto" class="card-img-top" style="max-width: 300px; max-height:300px;" alt="..." />
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <div class="card-body">
+                                            <h5 class="">@matricula.Aluno?.Nome</h5>
+                                            <div><strong>Cel:</strong> @matricula.Aluno?.CelAluno</div>
+                                            <div><strong>Email:</strong> @matricula.Aluno?.EmailAluno</div>
+                                            <div><strong>Mãe: </strong> @matricula.Aluno?.Mae</div>
+                                            <div><strong>Cel:</strong> @matricula.Aluno?.CelMae</div>
+                                            <div><strong>Pai: </strong> @matricula.Aluno?.Pai</div>
+                                            <div><strong>Cel:</strong> @matricula.Aluno?.CelPai</div>
+
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div><strong>PNE: @(matricula.Aluno.Pne ? "Sim" : "Não") </strong>OBS: @matricula.Aluno.ObsAluno </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Fim col-->
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>

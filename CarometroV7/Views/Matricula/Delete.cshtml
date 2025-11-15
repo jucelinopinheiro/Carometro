@@ -1,0 +1,46 @@
+﻿@model Matricula
+@{
+    ViewData["Title"] = "Excluir matrícula";
+}
+<div class="row">
+    <div class="col">
+        <h1 class="display-4">Excluir matrícula</h1>
+        <hr />
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["MensagemSucesso"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["MensagemErro"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+</div>
+
+<partial name="_MatriculaResumo" />
+
+<div class="row">
+    <div class="col-6">
+        <form asp-controller="Matricula" asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" value="Delete" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i> Excluir</button>
+            <a class="btn ca-btn-secondary" onclick="history.back()"><i class="fas fa-undo-alt"></i> Voltar</a>
+        </form>
+    </div>
+</div>

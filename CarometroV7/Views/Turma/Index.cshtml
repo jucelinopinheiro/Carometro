@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Turma>
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="row">
+    <div class="col">
+        <h1 class="display-4">Lista de Turmas</h1>
+        <hr />
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        <a type="button" class="btn ca-btn-primary" asp-controller="Turma" asp-action="Create">
+            <i class="fas fa-plus"></i> Nova Turma
+        </a>
+    </div>
+
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["MensagemSucesso"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["MensagemErro"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Curso
+                </th>
+                <th>
+                    Tipo
+                </th>
+                <th>
+                    Status
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Curso.Descricao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Curso.NomeTipo)
+                    </td>
+                    <td>
+                        @(item.Ativo ? "Sim" : "Não")
+                    </td>
+                    <td>
+                        <a class="btn ca-btn-dark" title="Turma Alunos" asp-action="AlunosDaTurma" asp-route-id="@item.Id"><i class="fa-solid fa-graduation-cap"></i></a>
+                        <a class="btn ca-btn-primary" title="Editar Curso" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a class="btn ca-btn-secondary" title="Detalhes do Curso" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i></a>
+                        <a class="btn btn-danger" title="Excluir Curso" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

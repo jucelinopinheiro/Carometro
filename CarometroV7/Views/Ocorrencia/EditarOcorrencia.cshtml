@@ -1,0 +1,91 @@
+﻿@model EditarOcorrenciaViewModel
+@{
+    ViewData["Title"] = "Editar ocorrência";
+}
+<div class="row">
+    <div class="col">
+        <h1 class="display-4">Editar Ocorrência</h1>
+        <hr />
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["MensagemSucesso"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["MensagemErro"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <form asp-controller="Ocorrencia" asp-action="EditarOcorrencia" enctype="multipart/form-data" method="post">
+
+            <div hidden>
+                @Html.HiddenFor(x => x.AlunoId)
+                @Html.ValidationMessageFor(x => x.AlunoId)
+            </div>
+
+            <div hidden>
+                @Html.HiddenFor(x => x.MatriculaId)
+                @Html.ValidationMessageFor(x => x.MatriculaId)
+            </div>
+
+            <div hidden>
+                @Html.HiddenFor(x => x.TurmaId)
+                @Html.ValidationMessageFor(x => x.TurmaId)
+            </div>
+
+            <div hidden>
+                @Html.HiddenFor(x => x.OcorrenciaId)
+                @Html.ValidationMessageFor(x => x.OcorrenciaId)
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.Nome)
+                        @Html.EditorFor(x => x.Nome, new { htmlAttributes = new { @class = "form-control", @required = "required", @list = "Ocorrencias" } })
+                        @Html.ValidationMessageFor(x => x.Nome)
+                        <datalist id="Ocorrencias">
+                            <option value="Ocorrência">Ocorrência</option>
+                            <option value="Just. de Falta">Just. de Falta</option>
+                            <option value="Saída Antecipada">Saída Antecipada</option>
+                            <option value="Aconselhamento">Aconselhamento</option>
+                        </datalist>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mt-2">
+                @Html.LabelFor(x => x.Descricao)
+                @Html.TextAreaFor(x => x.Descricao, new { @class = "form-control", @required = "required" })
+                @Html.ValidationMessageFor(x => x.Descricao)
+            </div>
+
+            <div class="row mt-3">
+                <div class="col">
+                    <a class="btn ca-btn-secondary" onclick="history.back()"><i class="fas fa-undo-alt"></i> Voltar</a>
+                    <button type="submit" class="btn ca-btn-primary"><i class="fas fa-save"></i> Salvar</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

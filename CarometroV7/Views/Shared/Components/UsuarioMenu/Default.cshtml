@@ -1,0 +1,11 @@
+﻿@model Usuario
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        @Model.Nome
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="AlterarSenha"><i class="fa-solid fa-gear"></i></i> Alterar Senha</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" asp-controller="Access" asp-action="Logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    </ul>
+</li>

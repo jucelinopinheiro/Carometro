@@ -1,0 +1,14 @@
+﻿<div class="row">
+    <div class="col-md-2">
+        <img src="~/img/bags/@(string.IsNullOrEmpty(Model.Bag)?"../Bag.png":Model.Bag)" alt="logo da turma" width="200" height="200" />
+    </div>
+    <div class="col-md-10">
+        <p><strong>ID: </strong>@Model?.Id <strong>Descrição: </strong>@Model.Descricao</p>
+        <p><strong>Tipo: </strong>@Model.Curso.NomeTipo <strong>Curso: </strong>@Model.Curso.Descricao</p>
+        <p><strong>Sigla: </strong>@Model.Sigla <strong>Turma no SGSET: </strong>@Model.TurmaSgset</p>
+        <p><strong>Classroom: </strong>@Model.Classroom</p>
+        <p><strong>Inicio: </strong>@String.Format("{0:dd/MM/yyyy}", Model.DataInicio) <strong>Final: </strong>@String.Format("{0:dd/MM/yyyy}", Model.DataFim)</p>
+        <p><strong>Ativo: </strong>@(Model.Ativo ? "Sim" : "Não")</p>
+        <p><strong>Criado: </strong> @Model.CreateAt <strong>Atualizado: </strong>@Model.UpdateAt</p>
+    </div>
+</div>

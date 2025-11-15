@@ -1,0 +1,280 @@
+﻿@model CreateMatriculaViewModel
+@{
+    ViewData["Title"] = "Criar Matrícula";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Criar Matrícula</h1>
+        <hr>
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <form asp-controller="Curso" asp-action="Create" method="post">
+        <div class="row mt-2">
+            <div class="form-group col-md-8">
+                <label for="TurmaId">Turma: </label>
+                <select class="form-control" id="TurmaId" name="TurmaId" required asp-items="@ViewBag.Turmas">
+                    <option selected="selected" value="">Selecione a Turma</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="form-group col-md-2">
+                <label for="Maricula">Matrícula SGSET:</label>
+                <input type="number" class="form-control" name="Matricula" id="Matricula">
+            </div>
+            <div class="form-group col-md-2">
+                <label for="DataMatricula">Data Matrícula:</label>
+                <input type="date" class="form-control" name="DataMatricula" id="DataMatricula">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="CpfAluno">CPF do Aluno:</label>
+                <input type="text" class="form-control" name="CpfAluno" id="CpfAluno" oninput="mascaraCpf(this)">
+            </div>
+        </div>
+        <div class="row mt-2">
+            
+        </div>
+        <div class="row mt-3">
+            <div class="form-group col-md-12">
+                <button type="button" id="btn-limpar" class="btn btn-danger"><i class="fas fa-broom"></i> Limpar Campos</button>
+                <button type="button" id="btn-incluir" class="btn btn-success"><i class="fas fa-plus"></i> Novo Aluno</button>
+            </div>
+        </div>
+    
+
+        <section class="row mt-3">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped">
+                        <thead>
+                            <tr>
+                                <th>CPF</th>
+                                <th>Matrícula</th>
+                                <th>Data Matrícula</th>
+                                <th>Aluno</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista-alunos">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section class="row">
+            <div class="col">
+                <hr>
+                <a class="btn ca-btn-secondary" onclick="history.back()"><i class="fas fa-undo-alt"></i> Voltar</a>
+                <button type="submit" id="btn-salvar" class="btn ca-btn-primary"><i class="fas fa-save"></i> Salvar</button>
+            </div>
+        </section>
+    </form>
+</div>
+
+@section scripts {
+    <script>
+
+        $("#Matricula").keypress(function (event) {
+            //para agilizar ao teclar <enter> se o campo esta com valor chamada função
+            if (event.which == 13) {
+                event.preventDefault();
+                if ($("#Matricula").val() != '') {
+                    $("#DataMatricula").focus();
+                }
+
+            }
+        });
+
+        $("#DataMatricula").keypress(function (event) {
+            //para agilizar ao teclar <enter> se o campo esta com valor chamada função
+            if (event.which == 13) {
+                event.preventDefault();
+                if ($("#Matricula").val() != '') {
+                    $("#CpfAluno").focus();
+                }
+
+            }
+        });
+
+        $("#CpfAluno").keypress(function (event) {
+            //para agilizar ao teclar <enter> se o campo esta com valor chamada função
+            if (event.which == 13) {
+                event.preventDefault();
+                if ($("#CpfAluno").val() != '') {
+                    buscaAluno($("#CpfAluno").val());
+                }
+            }
+        });
+
+        $("#btn-incluir").click(function () {
+            event.preventDefault();
+            if ($("#CpfAluno").val() != '') {
+                buscaAluno($("#CpfAluno").val());
+            }
+        });
+
+        $("#btn-limpar").click(function () {
+            limparCampos();
+        });
+
+        $("#lista-alunos").on('click', '.excluir-aluno', function () {
+            //remove itens da tabela lista-patrimônio
+            $(this).parent().parent().remove();
+            verificaDuplicados();
+        });
+
+        $("form").submit(function (event) {
+            event.preventDefault();
+            salvarLista();
+            limparCampos();
+
+        });
+
+
+        /*Limpa campos */
+        function limparCampos() {
+            //limpa campo
+            $("#Cursos").val("");
+            $("#TurmaId").val("");
+            $("#Matricula").val("");
+            $("#CpfAluno").val("");
+            $("#Matricula").focus();
+        }
+
+        /*Busca aluno */
+        function buscaAluno(cpfaluno) {
+            $.ajax({
+                type: 'GET',
+                dataType: 'JSON',
+                url: '../v1/alunos/busca?cpf=' + cpfaluno,
+                contentType: 'application/json; charset=utf-8',
+                beforeSend: function () {
+                    /* não implementado */
+                },
+                success: function (data) {
+                    incluirAluno(data.data);
+                    verificaDuplicados();
+                    $("#CpfAluno").val('');
+                    $("#Matricula").val('');
+                    $("#DataMatricula").val('');
+                    $("#Matricula").focus();
+                },
+                error: function (data) {
+                    alerta('Ops! Aluno não cadastrado', 'danger');
+                }
+            });
+
+        }
+
+        /* Incluir item na tabela */
+        function incluirAluno(aluno) {
+            linha = '<tr id=' + aluno.id + ' numero-matricula=' + $("#Matricula").val() + ' data-matricula= '+ $("#DataMatricula").val() + '> ' +
+                '<td>' + aluno.cpf + '</td>' +
+                '<td>' + $("#Matricula").val() + '</td>' +
+                '<td>' + $("#DataMatricula").val() + '</td>' +
+                '<td>' + aluno.nome + '</td>' +
+                '<td><button type="button" class="btn btn-danger excluir-aluno"><i class="fas fa-times"></i></button></td>' +
+                '</tr>'
+            $("#lista-alunos").prepend(linha);
+
+        }
+
+        function verificaDuplicados() {
+            /*essa função varre a tabela atras de valores duplicados
+             *essa função remove os alertas e adiciona novamente ao
+             *encontrar o valores duplicados
+             */
+
+            var linhas = $("#lista-alunos tr");
+            $("#itens-na-lista").text(linhas.length);
+            $(linhas).each(function () {
+                $(this).removeClass('bg-info');
+            });
+
+            for (i = 0; i < linhas.length; i++) {
+                var p_atual = $(linhas[i]).attr('id');
+                var duplicado = 0;
+                for (y = 0; y < linhas.length; y++) {
+                    if ($(linhas[y]).attr('id') == p_atual) {
+                        duplicado++;
+                    }
+                    if (duplicado >= 2) {
+                        $("#lista-alunos tr").each(function () {
+                            if ($(this).attr('id') == p_atual) {
+                                $(this).addClass('bg-info');
+                            }
+                        });
+                    } else {
+                        $("#status").text('OK!');
+                    }
+                }
+            }
+        }
+
+        function salvarLista() {
+            //percorre a tabela e evnia para função salvar enturmação
+            var lista = $("#lista-alunos tr");
+            for (i = 0; i < lista.length; i++) {
+                let enturmados = $(lista[i]).attr('id');
+                let numeroMatricula = $(lista[i]).attr('numero-matricula');
+                let dataMatricula = $(lista[i]).attr('data-matricula');
+                salvarlistaEnturmados(enturmados, numeroMatricula, dataMatricula);
+            }
+            $("#Matricula").focus();
+        }
+
+        function salvarlistaEnturmados(enturmado, matricula, dataMatricula) {
+            //envia para ser salvo no bando de dados.
+            var dado = {
+                AlunoId: enturmado,
+                TurmaId: $("#TurmaId").val(),
+                MatriculaSgset: matricula,
+                DataMatricula: dataMatricula
+            };
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'JSON',
+                url: '../v1/matriculas/enturmar',
+                data: JSON.stringify(dado),
+                contentType: 'application/json; charset=utf-8',
+                beforeSend: function () {
+                    /* não implementado */
+                },
+                success: function (data) {
+                    $('#' + enturmado).remove();
+                },
+                error: function (data) {
+                    alerta('Ops! Erro ao salvar', 'danger');
+                }
+            });
+        }
+
+
+        function alerta(message, type) {
+            var wrapper = document.createElement('div')
+            wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+            $("#mensagem").append(wrapper);
+            $("#mensagem").show();
+        }
+
+    </script>
+}

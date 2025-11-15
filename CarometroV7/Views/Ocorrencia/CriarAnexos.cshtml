@@ -1,0 +1,76 @@
+﻿@model CriarAnexosViewModel
+@{
+    ViewData["Title"] = "Criar anexos";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Criar anexos</h1>
+        <hr>
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+    <form asp-controller="Ocorrencia" asp-action="CriarAnexos" enctype="multipart/form-data" method="post">
+
+        <div hidden>
+            @Html.HiddenFor(x => x.AlunoId)
+            @Html.ValidationMessageFor(x => x.AlunoId)
+        </div>
+
+        <div hidden>
+            @Html.HiddenFor(x => x.TurmaId)
+            @Html.ValidationMessageFor(x => x.TurmaId)
+        </div>
+
+        <div hidden>
+            @Html.HiddenFor(x => x.OcorrenciaId)
+            @Html.ValidationMessageFor(x => x.OcorrenciaId)
+        </div>
+
+
+        <div class="row mt-2">
+            <div class="col-md-4">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.NomeDoAnexo)
+                    @Html.EditorFor(x => x.NomeDoAnexo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.NomeDoAnexo)
+                </div>
+                <small class="form-text text-muted">Ex: Atestado, comprovante, certificado, etc...</small>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <label class="input-group-text" for="Arquivo">Upload</label>
+                    <input type="file" asp-for="Anexos" accept="image/jpeg,image/jpg,image/png,application/pdf" class="form-control" multiple>
+                    @Html.ValidationMessageFor(x => x.Anexos)
+                </div>
+                <small class="form-text text-muted">Somente arquivo ".pdf, .png, ou .jpg"</small>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <a class="btn ca-btn-secondary" onclick="history.back()"><i class="fas fa-undo-alt"></i> Voltar</a>
+                <button type="submit" class="btn ca-btn-primary"><i class="fas fa-save"></i> Salvar</button>
+            </div>
+        </div>
+
+    </form>
+</div>

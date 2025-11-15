@@ -1,0 +1,146 @@
+﻿@model EditTurmaViewModel;
+@{
+    ViewData["Title"] = "Editar Turma";
+}
+
+<div>
+    <div>
+        <h1 class="display-4">Editar Turma</h1>
+        <hr>
+
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            @TempData["MensagemErro"]
+        </div>
+    }
+
+
+
+    <form asp-controller="Turma" asp-action="Edit" enctype="multipart/form-data" method="post">
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="row">
+                    <div class="col">
+                        <img class="mb-2" id="logo" src="~/img/bags/@(string.IsNullOrEmpty(Model.Bag)?"../Bag.png":Model.Bag)" alt="Logo" width="200" height="200">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col text-center">
+                        <input class="inputfile" type="file" accept=".png" asp-for="Arquivo">
+                        <label for="Arquivo"><i class="fa-solid fa-upload"></i> Carregar Logo</label>
+                        <span asp-validation-for="Arquivo" class="text-danger"></span>
+                        <p><small class="form-text text-muted">Somente arquivo ".png"</small></p>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="col-md-10">
+                <div class="form-group mb-2">
+                    @Html.LabelFor(x => x.Descricao)
+                    @Html.EditorFor(x => x.Descricao, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                    @Html.ValidationMessageFor(x => x.Descricao)
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-6 form-group ">
+                        @Html.LabelFor(x => x.TurmaSgset)
+                        @Html.EditorFor(x => x.TurmaSgset, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                        @Html.ValidationMessageFor(x => x.TurmaSgset)
+                    </div>
+                    <div class="col-md-6 form-group ">
+                        @Html.LabelFor(x => x.Sigla)
+                        @Html.EditorFor(x => x.Sigla, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                        @Html.ValidationMessageFor(x => x.Sigla)
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col form-group">
+                        @Html.LabelFor(x => x.CursoId)
+                        @Html.DropDownList("CursoId", ViewBag.Cursos, "Selecione o Curso", new
+                            {
+                                @class = "form-control",
+                                @required = "required"
+                            })
+                        @Html.ValidationMessageFor(x => x.CursoId)
+                    </div>
+                    <div class="col-md-6 form-group ">
+                        @Html.LabelFor(x => x.Classroom)
+                        @Html.EditorFor(x => x.Classroom, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(x => x.Classroom)
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 form-group">
+                        @Html.LabelFor(x => x.DataInicio)
+                        <input type="date" class="form-control" asp-for="DataInicio" asp-format="{0:yyyy-MM-dd}" value="@String.Format("{0:yyyy-MM-dd}", Model.DataInicio)" required />
+                        @Html.ValidationMessageFor(x => x.DataInicio)
+                    </div>
+                    <div class="col-md-6 form-group ">
+                        @Html.LabelFor(x => x.DataFim)
+                        <input type="date" class="form-control" asp-for="DataFim" asp-format="{0:yyyy-MM-dd}" value="@String.Format("{0:yyyy-MM-dd}", Model.DataFim)" required />
+                        @Html.ValidationMessageFor(x => x.DataFim)
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="form-group mb-2">
+                        <div class="form-check form-switch">
+                            @Html.LabelFor(x => x.Ativo, new { @class = "form-check-label" })
+                            @Html.CheckBoxFor(x => x.Ativo, new { @class = "form-check-input" })
+                            @Html.ValidationMessageFor(x => x.Ativo)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="row mt-4">
+            <div class="col">
+                <a class="btn ca-btn-secondary" onclick="history.back()"><i class="fas fa-undo-alt"></i> Voltar</a>
+                <button type="submit" class="btn ca-btn-primary"><i class="fas fa-save"></i> Salvar</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#Arquivo').change(function (event) {
+                var input = event.target;
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#logo').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+        });
+    </script>
+}
